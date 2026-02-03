@@ -7,6 +7,7 @@ import fetchGods from './fetchGods';
 import fetchItems from './fetchItems';
 
 const random = (arr) => arr.at(Math.floor(Math.random() * arr.length));
+const MAX_ROLLS = 999;
 
 function App() {
   const { data: relicData, isSuccess: isRelicSuccess } = useQuery({ queryKey: ['relics'], queryFn: fetchRelicItems });
@@ -18,15 +19,17 @@ function App() {
   const [items, setItems] = useState([0, 0, 0, 0, 0, 0].fill({ name: '', image: '' }));
   const [starter, setStarter] = useState({ name: '', image: '' });
   const [relic, setRelic] = useState({ name: '', image: '' });
-  const [rerolls, setRerolls] = useState(3);
+  const [rerolls, setRerolls] = useState(MAX_ROLLS);
 
-  const onRandomize = useCallback((category, itemSlot) => {
-    if (category && !rerolls) {
-      return;
-    } else if (category) {
-      setRerolls((rerolls) => rerolls - 1);
-    } else {
-      setRerolls(3);
+  const onRandomize = useCallback((category, itemSlot, skipRerolls) => {
+    if (!skipRerolls) {
+      if (category && !rerolls) {
+        return;
+      } else if (category) {
+        setRerolls((rerolls) => rerolls - 1);
+      } else {
+        setRerolls(MAX_ROLLS);
+      }
     }
     if (relicData && (!category || category === "relic")) {
       setRelic(random(relicData.filter((item) => item.cost === 0)));
@@ -44,16 +47,21 @@ function App() {
       if (itemSlot !== undefined) {
         setItems((items) => {
           const newItems = [...items];
-          newItems[itemSlot] = random(itemsData);
+          let newItem = random(itemsData);
+          // eslint-disable-next-line
+          while (newItems.find((item) => item.name === newItem.name)) {
+            newItem = random(itemsData);
+          }
+          newItems[itemSlot] = newItem;
           return newItems;
         })
       } else {
-        setItems([
-          random(itemsData), random(itemsData), 
-          random(itemsData), random(itemsData), 
-          random(itemsData), random(itemsData)
-        ]);
-
+        onRandomize("items", 0, true);
+        onRandomize("items", 1, true);
+        onRandomize("items", 2, true);
+        onRandomize("items", 3, true);
+        onRandomize("items", 4, true);
+        onRandomize("items", 5, true);
       }
     }
   }, [godsData, itemsData, relicData, rerolls, starterData]);
