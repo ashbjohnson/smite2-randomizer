@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/smite2/static/css/main.11c16ba2.css",
+    "main.js": "/smite2/static/js/main.d3f8f3f4.js",
+    "static/js/453.73bbec8f.chunk.js": "/smite2/static/js/453.73bbec8f.chunk.js",
+    "index.html": "/smite2/index.html",
+    "main.11c16ba2.css.map": "/smite2/static/css/main.11c16ba2.css.map",
+    "main.d3f8f3f4.js.map": "/smite2/static/js/main.d3f8f3f4.js.map",
+    "453.73bbec8f.chunk.js.map": "/smite2/static/js/453.73bbec8f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.11c16ba2.css",
+    "static/js/main.d3f8f3f4.js"
+  ]
+}
