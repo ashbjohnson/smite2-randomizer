@@ -3,11 +3,32 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { QueryClient } from '@tanstack/react-query';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const persister = createAsyncStoragePersister({
+  storage: window.localStorage,
+});
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      retry: false,
+      staleTime: 1000 * 60 * 6 * 24,
+      gcTime: 1000 * 60 * 6 * 24,
+    }
+  }
+});
 root.render(
   <React.StrictMode>
-    <App />
+    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
+      <App />
+    </PersistQueryClientProvider>
   </React.StrictMode>
 );
 
