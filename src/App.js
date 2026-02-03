@@ -70,6 +70,9 @@ function App() {
 
   return (
     <div className="App">
+      <nav>
+        <h2 className="randomise" style={{ border: false, boxShadow: 'none', textShadow: '0 8px 8px black' }}>Smite 2 Randomizer</h2>
+      </nav>
       <div className="content">
       <div className="randomiser">
         <div className="button randomise" onClick={() => onRandomize()}>
